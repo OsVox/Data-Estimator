@@ -1,0 +1,40 @@
+import numpy as np
+from matplotlib import pyplot as plt
+import math
+
+scalar = lambda x: 1
+linear = lambda x: x
+square = lambda x: x**2
+cube = lambda x: x**3
+
+fff = [scalar, linear, square, cube]
+
+X = np.array([-23, -10, 0, 6, 14, 21]).transpose()    # IN NUMPY FOR SOME REASON VECTORS ARE ROWS
+Y = np.array([3, 0, 16, -3, 6, 9]).transpose()     # CORRESPONDING OUTPUTS
+
+Func0 = np.ones(X.shape[0]).transpose()
+Func1 = X
+Func2 = square(X)
+Func3 = cube(X)
+
+list_of_f = [Func0, Func1, Func2, Func3]
+
+F = np.stack(list_of_f, axis=1)
+F_T = F.transpose()
+
+Theta = ((np.linalg.inv(F_T.dot(F))).dot(F_T)).dot(Y)
+print(Theta)
+
+
+# plotting the points
+plt.plot(X, Y)
+
+x = np.arange(X[0] - 1, X[-1] + 1, 0.1)
+y = Theta[0]*fff[0](x) + Theta[1]*fff[1](x) + Theta[2]*fff[2](x) + Theta[3]*fff[3](x)
+
+plt.plot(x, y)
+
+plt.xlabel('x - axis')
+plt.ylabel('y - axis')
+
+plt.show()
